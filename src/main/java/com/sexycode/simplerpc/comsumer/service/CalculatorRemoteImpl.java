@@ -5,6 +5,7 @@ import com.sexycode.simplerpc.reuqest.CalculateRpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,11 +36,18 @@ public class CalculatorRemoteImpl implements Calculator {
 
             log.info("response is {}", response);
 
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             if (response instanceof Integer) {
                 return (Integer) response;
             } else {
                 throw new InternalError();
             }
+
 
         } catch (Exception e) {
             log.error("fail", e);
